@@ -1,4 +1,4 @@
-# 🧑‍💻 Portfolio de Benjamin Vallon
+# 👨🏻‍💻 Portfolio de Benjamin Vallon
 
 Ce portfolio a pour objectif de présenter mes projets, mes compétences techniques et mon parcours de développeur web. Il intègre un dashboard avec système d’authentification pour gérer dynamiquement les contenus.
 
@@ -23,7 +23,7 @@ Ce portfolio a pour objectif de présenter mes projets, mes compétences techniq
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/ton-utilisateur/benjaminvallon-portfolio.git
+git clone https://github.com/Benjamin-V-Dev/portfolio.benjamin-vallon.git
 cd benjaminvallon-portfolio
 npm install
 npm run dev
