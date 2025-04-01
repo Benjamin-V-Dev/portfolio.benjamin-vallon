@@ -1,0 +1,50 @@
+import { Roboto } from 'next/font/google';
+import './globals.css';
+import Header from '@/components/Header';
+import ResponsiveTool from '@/components/Tools/Responsive';
+import Halo from '@/components/Halo';
+import ClientLoader from '@/components/Loader/ClientLoader';
+import Footer from '@/components/Footer';
+import ConsentManager from '@/components/ConsentManager';
+
+const roboto = Roboto({
+    subsets: ['latin'],
+    weight: ['400', '700'], // Normal et Bold
+});
+
+export const metadata = {
+    title: {
+        default: 'Benjamin Vallon : Développeur web frontend', //Titre utilisé également pour Twitter et OG (max 70 caractères)
+    },
+    description:
+        "Bienvenue sur mon portfolio, prenez le temps de découvrir mes projets, et n'hésitez pas à me contacter si besoin.", //description utilisé également pour Twitter et OG (max 200 caractères)
+    twitter: {
+        card: 'summary_large_image',
+    },
+    openGraph: {
+        images: [
+            {
+                url: '/benjamin.webp',
+            },
+        ],
+    },
+};
+
+export default function RootLayout({ children }) {
+    return (
+        <html lang='fr'>
+            <body className={roboto.className}>
+                <Header />
+                <Halo />
+                {/* <ResponsiveTool /> */}
+                <ClientLoader>
+                    <main>
+                        <ConsentManager />
+                        {children}
+                    </main>
+                </ClientLoader>
+                <Footer />
+            </body>
+        </html>
+    );
+}

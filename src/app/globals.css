@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    @apply bg-black text-white select-none scrollbar-transparent relative;
+    --font-roboto: 'Roboto', sans-serif;
+}
+main {
+    @apply mt-[200px] px-4 mx-auto max-w-[1500px];
+}
+
+/* Pour rendre le fond de la scrollbar invisible */
+@layer utilities {
+    .scrollbar-transparent::-webkit-scrollbar {
+        width: 6px; /* Largeur de la scrollbar */
+    }
+    .scrollbar-transparent::-webkit-scrollbar-track {
+        background: transparent; /* Fond invisible */
+    }
+    .scrollbar-transparent::-webkit-scrollbar-thumb {
+        background: rgb(134, 122, 238); /* Couleur du "thumb" */
+        border-radius: 5px;
+    }
+}
+
+/* Scrollbar custom du form contact */
+.scrollbar-hide::-webkit-scrollbar {
+    width: 8px; /* Largeur de la barre */
+    background: transparent; /* Pas de fond */
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+    background: #4f46e5; /* Couleur du pouce */
+    border-radius: 8px;
+}
+
+.scrollbar-hide::-webkit-scrollbar-track {
+    background: transparent; /* Pas de track */
+}
+
+.heading1 {
+    @apply text-[37px] lg:text-[50px] font-bold;
+}
+.heading2 {
+    @apply text-[25px] lg:text-[30px] font-extrabold;
+}
+.heading3 {
+    @apply text-[20px] lg:text-[px] font-extrabold;
+}
+.heading4 {
+    @apply text-4xl font-bold;
+}
+.heading5 {
+    @apply text-4xl font-bold;
+}
+.heading6 {
+    @apply text-4xl font-bold;
+}
+p {
+    @apply text-[15px] lg:text-[18px] leading-loose font-medium;
+}
+
+/* Gradient sur le hero de la home et la photo de about */
+.halo {
+    position: fixed;
+    width: 662px;
+    height: 662px;
+    border-radius: 50%;
+    opacity: 0.2;
+    background: var(
+        --Gradient-Primary,
+        linear-gradient(90deg, #a585ea 0%, #7c86f8 100%)
+    );
+    filter: blur(132px);
+    z-index: -1;
+}
+
+/* Loader pour les images des projets */
+.loader {
+    width: 64px;
+    height: 64px;
+    position: relative;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.loader:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    transform: rotate(45deg) translate(30%, 40%);
+    background: #ff9371;
+    box-shadow: 32px -34px 0 5px #ff3d00;
+    animation: slide 2s infinite ease-in-out alternate;
+}
+.loader:after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff3d00;
+    transform: rotate(0deg);
+    transform-origin: 35px 145px;
+    animation: rotate 2s infinite ease-in-out;
+}
+
+@keyframes slide {
+    0%,
+    100% {
+        bottom: -35px;
+    }
+    25%,
+    75% {
+        bottom: -2px;
+    }
+    20%,
+    80% {
+        bottom: 2px;
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(-15deg);
+    }
+    25%,
+    75% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(25deg);
+    }
+}
+
+/* Loader pour la Home */
+.loaderHome {
+    width: 48px;
+    height: 40px;
+    margin-top: 30px;
+    display: inline-block;
+    position: relative;
+    background: #fff;
+    border-radius: 15% 15% 35% 35%;
+}
+.loaderHome::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 45px;
+    top: 8px;
+    border: 4px solid #fff;
+    width: 16px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+}
+.loaderHome::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 10px;
+    color: #fff;
+    top: -15px;
+    left: 11px;
+    box-sizing: border-box;
+    animation: animloader 1s ease infinite;
+}
+
+@keyframes animloader {
+    0% {
+        box-shadow: 2px 0px rgba(255, 255, 255, 0),
+            12px 0px rgba(255, 255, 255, 0.3), 20px 0px rgba(255, 255, 255, 0);
+    }
+    50% {
+        box-shadow: 2px -5px rgba(255, 255, 255, 0.5),
+            12px -3px rgba(255, 255, 255, 0.5),
+            20px -2px rgba(255, 255, 255, 0.6);
+    }
+    100% {
+        box-shadow: 2px -8px rgba(255, 255, 255, 0),
+            12px -5px rgba(255, 255, 255, 0), 20px -5px rgba(255, 255, 255, 0);
+    }
+}
+
+/* Loader pour le bouton du formulaire de contact */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+@layer utilities {
+  .h-calc {
+    height: calc(100vh - 400px);
+  }
+  @screen md {
+    .h-calc {
+      height: calc(100vh - 320px);
+    }
+  }
+}
