@@ -1,10 +1,10 @@
-"use client";
+'use client';
 import { useEffect, useCallback } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiAlertCircle } from 'react-icons/fi';
-import useConsentStore from '@/app/utils/useConsentStore';
-import {Cookie } from 'lucide-react';
+import useConsentStore from '@/utils/useConsentStore';
+import { Cookie } from 'lucide-react';
 import Link from 'next/link';
 
 const POSITIVE_CONSENT_DURATION = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
@@ -90,8 +90,14 @@ export default function ConsentManager() {
                                 <p className='text-center mb-6'>
                                     Ce site utilise des cookies à des fins
                                     statistiques (voir la{' '}
-                                    <a href="/politique-de-confidentialite" className='font-extrabold underline' target='_blank' rel='noopener noreferer'>politique de confidentialité</a>).
-                                    Vous pouvez les accepter ou les refuser.
+                                    <a
+                                        href='/politique-de-confidentialite'
+                                        className='font-extrabold underline'
+                                        target='_blank'
+                                        rel='noopener noreferer'>
+                                        politique de confidentialité
+                                    </a>
+                                    ). Vous pouvez les accepter ou les refuser.
                                 </p>
                                 <div className='flex gap-2'>
                                     <button

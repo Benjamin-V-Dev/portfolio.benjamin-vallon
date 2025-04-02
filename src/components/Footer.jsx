@@ -10,8 +10,8 @@ import {
     Lock,
 } from 'lucide-react';
 import MailModal from '@/components/MailModal';
-import useConsentStore from '@/app/utils/useConsentStore';
-import useModalStore from '@/app/utils/useModalStore';
+import useConsentStore from '@/utils/useConsentStore';
+import useModalStore from '@/utils/useModalStore';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -67,7 +67,7 @@ export default function Footer() {
                             <Cookie />
                         </button>
                         <Link
-                            href='/dashboard'
+                            href='/login/signin'
                             title='Accéder au dashboard'
                             className='text-gray-400 hover:text-gray-300 w-1/6 sm:w-fit'>
                             <Lock />

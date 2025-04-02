@@ -61,6 +61,11 @@ p {
     @apply text-[15px] lg:text-[18px] leading-loose font-medium;
 }
 
+
+input{
+    @apply bg-transparent rounded px-4 py-2;
+}
+
 /* Gradient sur le hero de la home et la photo de about */
 .halo {
     position: fixed;
@@ -212,3 +217,4 @@ p {
     }
   }
 }
+

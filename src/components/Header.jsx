@@ -3,8 +3,8 @@
 //importation des dépendances
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Mail } from 'lucide-react';
-import useModalStore from '@/app/utils/useModalStore';
+import { Mail, Lock } from 'lucide-react';
+import useModalStore from '@/utils/useModalStore';
 import Image from 'next/image';
 
 export default function Header() {
@@ -19,10 +19,11 @@ export default function Header() {
     return (
         <header className='fixed top-0 left-0 w-full bg-black z-40'>
             <div className='relative flex justify-around items-center flex-wrap overflow-x-hidden lg:px-20'>
-                <Link
-                    href='/'
-                    className=' lg:w-1/4'>
-                    <Image src="/logo_plein_blanc.svg" height={30} width={30}></Image>
+                <Link href='/' className=' lg:w-1/4'>
+                    <Image
+                        src='/logo_plein_blanc.svg'
+                        height={30}
+                        width={30}></Image>
                 </Link>
                 <nav className='order-3 w-full flex justify-center items-center h-[80px] text-[15px] font-bold text-txtGray lg:order-2 lg:w-2/4'>
                     {navItems.map((item) => (
@@ -45,7 +46,8 @@ export default function Header() {
                         </div>
                     ))}
                 </nav>
-                <div className='order-2 h-[80px] flex justify-end items-center lg:order-3 lg:w-1/4 relative '>
+                <div className='gap-6 order-2 h-[80px] flex justify-end items-center lg:order-3 lg:w-1/4 relative '>
+                    {/* Contact */}
                     <div
                         onClick={openModal}
                         className='bg-customDarkGray p-3 rounded-full lg:rounded-[20px] lg:px-6 lg:py-3 hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer lg:hidden'>
@@ -61,6 +63,22 @@ export default function Header() {
                         {/* Icône */}
                         <Mail className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
                     </div>
+                    {/* Dashboard */}
+                    <Link
+                        href='/login'
+                        className='bg-customDarkGray p-3 rounded-full lg:rounded-[20px] lg:px-6 lg:py-3 hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer lg:hidden'>
+                        <Lock />
+                    </Link>
+                    <Link
+                        href='/login'
+                        className='hidden lg:block bg-customDarkGray rounded-[20px] px-7 py-3 group overflow-hidden relative h-[50px] cursor-pointer'>
+                        {/* Texte */}
+                        <p className='text-[15px] font-extrabold transform transition-transform duration-300 group-hover:-translate-y-[200%]'>
+                            Dashboard
+                        </p>
+                        {/* Icône */}
+                        <Lock className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
+                    </Link>
                 </div>
                 <div className='absolute bottom-0 left-0 w-full h-[0.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent'></div>
             </div>

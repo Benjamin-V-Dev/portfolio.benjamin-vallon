@@ -5,7 +5,7 @@ export async function POST(request) {
     try {
         // Récupération des données du formulaire
         const { name, email, message } = await request.json();
-        // console.log('Requête reçue :', { name, email, message });
+
         // Configuration du transporteur de mail
         const transporter = nodemailer.createTransport({
             host: 'smtp.hostinger.com',
@@ -17,7 +17,7 @@ export async function POST(request) {
                 pass: process.env.SMTP_PASSWORD,
             },
         });
-        // console.log('Mot de passe récupéré :', process.env.MAIL_SMTP_PASSWORD);
+
 
         // Template HTML du premier email (administrateurs)
         const mailContentFirst = `
