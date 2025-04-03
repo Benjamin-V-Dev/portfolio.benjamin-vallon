@@ -8,6 +8,7 @@ import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export const Visitor = () => {
     // function
@@ -21,6 +22,8 @@ export const Visitor = () => {
             expires,
             path: '/',
         });
+        // Connected
+        toast.success('Vous êtes connecté en tant que visiteur');
         // Redirect
         router.push('/dashboard');
     };
