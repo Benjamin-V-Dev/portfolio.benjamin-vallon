@@ -1,11 +1,9 @@
 'use client';
 import { createUser } from '@/actions/create-user';
 import { checkEmail } from '@/utils/check-emailsyntax';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'react-toastify';
-import SubmitButton from '@/components/Buttons/SubmitButton';
 import { Login } from '@/components/Dashboard/Login';
 
 export default function SignUp() {

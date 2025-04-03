@@ -67,7 +67,7 @@ export default function Footer() {
                             <Cookie />
                         </button>
                         <Link
-                            href='/login/signin'
+                            href='/dashboard'
                             title='Accéder au dashboard'
                             className='text-gray-400 hover:text-gray-300 w-1/6 sm:w-fit'>
                             <Lock />

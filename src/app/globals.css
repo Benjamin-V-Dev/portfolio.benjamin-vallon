@@ -10,6 +10,10 @@ main {
     @apply mt-[200px] px-4 mx-auto max-w-[1500px];
 }
 
+/* .mainDashboard {
+    @apply mt-[200px] px-4 mx-auto min-w-[100vw];
+} */
+
 /* Pour rendre le fond de la scrollbar invisible */
 @layer utilities {
     .scrollbar-transparent::-webkit-scrollbar {

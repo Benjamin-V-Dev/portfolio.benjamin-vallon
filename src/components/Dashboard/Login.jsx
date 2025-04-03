@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useFormStatus } from 'react-dom';
 
 export const Login = ({ prepareCreateUser, prepareLogin }) => {
     const pathname = usePathname();
@@ -38,8 +39,6 @@ export const Login = ({ prepareCreateUser, prepareLogin }) => {
                 />
                 {/* <Terms /> */}
             </motion.div>
-
-            <CornerGrid />
         </div>
     );
 };
@@ -98,16 +97,20 @@ const Or = () => {
 const Email = ({ isSignUp, prepareCreateUser, prepareLogin }) => {
     const [showPassword, setShowPassword] = useState('password');
     const [showConfirmPassword, setShowConfirmPassword] = useState('password');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
+                setIsSubmitting(true);
+
                 const formData = new FormData(e.target);
-                if (isSignUp) {
-                    prepareCreateUser(formData);
-                } else {
-                    prepareLogin(formData);
-                }
+                const callback = isSignUp ? prepareCreateUser : prepareLogin;
+
+                Promise.resolve(callback(formData)).finally(() =>
+                    setIsSubmitting(false),
+                );
             }}>
             {isSignUp && (
                 <div className='mb-3'>
@@ -135,7 +138,7 @@ const Email = ({ isSignUp, prepareCreateUser, prepareLogin }) => {
                     name='email'
                     id='email'
                     type='email'
-                    placeholder='your.email@provider.com'
+                    placeholder='mon.email@domaine.fr'
                     className='w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 placeholder-zinc-500 ring-1 ring-transparent transition-shadow focus:outline-0 focus:ring-blue-700'
                 />
             </div>
@@ -214,8 +217,11 @@ const Email = ({ isSignUp, prepareCreateUser, prepareLogin }) => {
                     </div>
                 </div>
             )}
-            <SplashButton type='submit' className='w-full'>
-                Valider
+            <SplashButton
+                type='submit'
+                className='w-full'
+                disabled={isSubmitting}>
+                {isSubmitting ? 'Chargement...' : 'Valider'}
             </SplashButton>
         </form>
     );
@@ -272,19 +278,6 @@ const BubbleButton = ({ children, className, ...rest }) => {
             {...rest}>
             {children}
         </button>
-    );
-};
-
-const CornerGrid = () => {
-    return (
-        <div
-            style={{
-                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-width='2' stroke='rgb(30 58 138 / 0.3)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
-                backgroundRepeat: 'repeat',
-                backgroundSize: 'auto',
-                backgroundColor: 'transparent', // même fond que le body
-            }}
-            className='absolute inset-0 z-[-1] w-full h-full'></div>
     );
 };
 

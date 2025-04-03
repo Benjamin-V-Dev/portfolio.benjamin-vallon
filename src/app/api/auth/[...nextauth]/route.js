@@ -58,7 +58,6 @@ export const authOptions = {
                     await client.close();
 
                     return user;
-
                 } catch (error) {
                     throw new Error(error.message);
                 }
@@ -70,7 +69,16 @@ export const authOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: { signIn: '/login/signin' },
-    callbacks: {},
+    callbacks: {
+        async jwt({ token, user }) {
+            user && (token.user = user);
+            return token;
+        },
+        async session({ session, user, token }) {
+            session.user = token.user;
+            return session;
+        },
+    },
 };
 
 const handler = NextAuth(authOptions);

@@ -37,15 +37,15 @@ export default function Signin() {
             if (response.error) {
                 return toast.error(response.error);
             }
+
+            // Success
+            toast.success('Vous êtes connecté');
+
+            // Redirect
+            router.replace('/dashboard');
         } catch (error) {
             return toast.error(error.message);
         }
-
-        // Success
-        toast.success('Vous êtes connecté');
-
-        // Redirect
-        router.replace('/dashboard');
     };
     return (
         <div>

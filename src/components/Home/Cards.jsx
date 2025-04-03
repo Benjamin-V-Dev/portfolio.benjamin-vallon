@@ -1,7 +1,7 @@
+'use client';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion'; // Import Framer Motion
-
 
 export default function Cards() {
     const cards = [
@@ -90,17 +90,17 @@ export default function Cards() {
         },
     };
 
-  const cardVariants = {
-      hidden: { opacity: 0, y: 50 }, // L'état initial (invisible et décalé vers le bas)
-      visible: {
-          opacity: 1, // Opacité devient visible
-          y: 0, // Repositionne à sa position d'origine
-          transition: {
-              duration: 0.6, // Durée de la transition
-              ease: 'easeOut', // Type de transition
-          },
-      },
-  };
+    const cardVariants = {
+        hidden: { opacity: 0, y: 50 }, // L'état initial (invisible et décalé vers le bas)
+        visible: {
+            opacity: 1, // Opacité devient visible
+            y: 0, // Repositionne à sa position d'origine
+            transition: {
+                duration: 0.6, // Durée de la transition
+                ease: 'easeOut', // Type de transition
+            },
+        },
+    };
 
     return (
         <motion.div

@@ -6,8 +6,9 @@ import Halo from '@/components/Halo';
 import ClientLoader from '@/components/Loader/ClientLoader';
 import Footer from '@/components/Footer';
 import ConsentManager from '@/components/ConsentManager';
-  import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './Providers';
 
 const roboto = Roboto({
     subsets: ['latin'],
@@ -36,7 +37,8 @@ export default function RootLayout({ children }) {
     return (
         <html lang='fr'>
             <body className={roboto.className}>
-                <ToastContainer position='bottom-right' />
+                <AuthProvider>
+                    <ToastContainer position='bottom-right' />
                     <Header />
                     <Halo />
                     {/* <ResponsiveTool /> */}
@@ -47,6 +49,7 @@ export default function RootLayout({ children }) {
                         </main>
                     </ClientLoader>
                     <Footer />
+                </AuthProvider>
             </body>
         </html>
     );

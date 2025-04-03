@@ -1,3 +1,4 @@
+'use client';
 import { motion } from 'framer-motion';
 
 export default function Hero() {
@@ -21,7 +22,6 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }} // Devient visible et revient à sa position d'origine
                 transition={{ duration: 1, delay: 0.5 }} // Transition avec délai
             >
-                ( A la recherche d'un poste en CDI sur Bordeaux )
             </motion.p>
         </section>
     );

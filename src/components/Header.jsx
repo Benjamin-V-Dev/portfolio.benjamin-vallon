@@ -6,8 +6,11 @@ import { usePathname } from 'next/navigation';
 import { Mail, Lock } from 'lucide-react';
 import useModalStore from '@/utils/useModalStore';
 import Image from 'next/image';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function Header() {
+    // Variables
+    const { data: session } = useSession();
     const { openModal } = useModalStore();
     // Déclaration des variables pour la navigation
     const pathname = usePathname();
@@ -64,21 +67,43 @@ export default function Header() {
                         <Mail className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
                     </div>
                     {/* Dashboard */}
-                    <Link
-                        href='/login'
-                        className='bg-customDarkGray p-3 rounded-full lg:rounded-[20px] lg:px-6 lg:py-3 hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer lg:hidden'>
-                        <Lock />
-                    </Link>
-                    <Link
-                        href='/login'
-                        className='hidden lg:block bg-customDarkGray rounded-[20px] px-7 py-3 group overflow-hidden relative h-[50px] cursor-pointer'>
-                        {/* Texte */}
-                        <p className='text-[15px] font-extrabold transform transition-transform duration-300 group-hover:-translate-y-[200%]'>
-                            Dashboard
-                        </p>
-                        {/* Icône */}
-                        <Lock className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
-                    </Link>
+                    {session?.user?.email ? (
+                        <button
+                            onClick={() => signOut({ callbackUrl: '/' })}
+                            className='bg-red-700 p-3 rounded-full lg:rounded-[20px] lg:px-6 lg:py-3 hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer lg:hidden'>
+                            <Lock />
+                        </button>
+                    ) : (
+                        <Link
+                            href='/dashboard'
+                            className='bg-customBlue p-3 rounded-full lg:rounded-[20px] lg:px-6 lg:py-3 hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer lg:hidden'>
+                            <Lock />
+                        </Link>
+                    )}
+
+                    {session?.user?.email ? (
+                        <button
+                            onClick={() => signOut({ callbackUrl: '/' })}
+                            className='hidden lg:block bg-red-700 rounded-[20px] px-7 py-3 group overflow-hidden relative h-[50px] cursor-pointer'>
+                            {/* Texte */}
+                            <p className='text-[15px] font-extrabold transform transition-transform duration-300 group-hover:-translate-y-[200%]'>
+                                Déconnexion
+                            </p>
+                            {/* Icône */}
+                            <Lock className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
+                        </button>
+                    ) : (
+                        <Link
+                            href='/dashboard'
+                            className='hidden lg:block bg-customBlue rounded-[20px] px-7 py-3 group overflow-hidden relative h-[50px] cursor-pointer'>
+                            {/* Texte */}
+                            <p className='text-[15px] font-extrabold transform transition-transform duration-300 group-hover:-translate-y-[200%]'>
+                                Dashboard
+                            </p>
+                            {/* Icône */}
+                            <Lock className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
+                        </Link>
+                    )}
                 </div>
                 <div className='absolute bottom-0 left-0 w-full h-[0.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent'></div>
             </div>

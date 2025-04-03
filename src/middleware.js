@@ -6,12 +6,12 @@ export function middleware(request) {
     let isAuthenticated = false;
 
     // Vérification visiteur est invité
-    if (hasCookie("guest", { cookies })) {
+    if (hasCookie('guest', { cookies })) {
         isAuthenticated = true;
     }
 
     if (!isAuthenticated) {
-        // Vérification utilisateur authentifié
+        // Redirection vers la page de connexion si non authentifié
         const url = request.nextUrl.clone();
         url.pathname = '/login';
         return NextResponse.redirect(url);
@@ -20,5 +20,5 @@ export function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/'],
+    matcher: ['/dashboard'],
 };

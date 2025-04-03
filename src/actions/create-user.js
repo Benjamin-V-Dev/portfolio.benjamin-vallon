@@ -28,9 +28,9 @@ export const createUser = async (username, email, password) => {
         );
     }
 
-   if (email !== process.env.AUTHORIZED_SIGNUP_EMAIL) {
-       throw new Error("Vous n'êtes pas autorisé à créer un compte.");
-   }
+    if (email !== process.env.AUTHORIZED_SIGNUP_EMAIL) {
+        throw new Error("Vous n'êtes pas autorisé à créer un compte.");
+    }
 
     // Connect to the MongoDB cluster
     const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
@@ -82,5 +82,7 @@ export const createUser = async (username, email, password) => {
         await client.close();
         throw new Error(error);
     }
+    
+    // Close the connection to the MongoDB cluster
     await client.close();
 };

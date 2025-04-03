@@ -9,36 +9,42 @@ export default function Parcours() {
             pointColor: 'rgb(255,143,86)',
             titre: 'Freelance',
             description: "Création de sites et d'applications web",
+            url: 'https://benjamin-vallon.fr',
         },
         {
             periode: 'Sept 2023 - Mars 2024',
             pointColor: 'rgb(255,143,86)',
             titre: 'Open Classrooms',
             description: 'Formation développeur web',
+            url: 'https://openclassrooms.com/fr/',
         },
         {
             periode: 'Sept 2022 - Août 2023',
             pointColor: 'rgb(255,143,86)',
             titre: 'My Digital School',
             description: '1ére année de Bachelor Développeur Web',
+            url: 'https://www.mydigitalschool.com/',
         },
         {
             periode: 'Juin 2019 - Juin 2022',
             pointColor: 'rgb(28,62,104)',
             titre: 'FIDI',
             description: "Membre du conseil d'administration",
+            url: 'https://lafidi.fr/',
         },
         {
             periode: 'Janv 2018 - Janv 2021',
             pointColor: 'rgb(158,193,68)',
             titre: 'Expertise Diagnostic Habitat',
             description: "Responsable d'agence",
+            url: 'https://edh-diagnostic.fr/',
         },
         {
             periode: 'Avr 2015 - Août 2022',
             pointColor: 'rgb(158,193,68)',
             titre: 'Expertise Diagnostic Habitat',
             description: 'Diagnostiqueur immobilier',
+            url: 'https://edh-diagnostic.fr/',
         },
     ];
 
@@ -116,9 +122,9 @@ export default function Parcours() {
                         </div>
                         <div className='w-[45%] flex flex-col'>
                             <div className='bg-customGrayTags rounded-[20px] p-3 max-w-[350px]'>
-                                <p className='text-[15px] font-bold'>
+                                <a href={parcours.url} target='_blank' rel='noopener noreferrer' className='text-[15px] font-bold'>
                                     {parcours.titre}
-                                </p>
+                                </a>
                                 <p className='text-[13px] w-full'>
                                     {parcours.description}
                                 </p>
