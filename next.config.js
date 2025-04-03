@@ -14,6 +14,14 @@ module.exports = (env) => {
                 NEXTAUTH_SECRET:
                     '7w?hnb3J?CZW?JYd2R5NFwMKULML508u8ChL?l6Dt6C32I0z0tKqsAgf1XI@lPqHITJtcyFCmV?$G6@7',
             },
+            images: {
+                remotePatterns: [
+                    {
+                        protocol: 'https',
+                        hostname: 'firebasestorage.googleapis.com',
+                    },
+                ],
+            },
         };
     }
     // npm run build
@@ -25,6 +33,14 @@ module.exports = (env) => {
                 MONGODB_DATABASE: 'portfolio',
                 NEXTAUTH_SECRET:
                     '7w?hnb3J?CZW?JYd2R5NFwMKULML508u8ChL?l6Dt6C32I0z0tKqsAgf1XI@lPqHITJtcyFCmV?$G6@7',
+            },
+            images: {
+                remotePatterns: [
+                    {
+                        protocol: 'https',
+                        hostname: 'firebasestorage.googleapis.com',
+                    },
+                ],
             },
         };
     }

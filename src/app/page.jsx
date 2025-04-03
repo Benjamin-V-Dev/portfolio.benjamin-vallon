@@ -1,11 +1,10 @@
-
-import Cards from '@/components/Home/Cards';
+import Cards from '@/components/Home/Projects';
 import Hero from '@/components/Home/Hero';
 import { MongoClient } from 'mongodb';
 
 export default async function Home() {
-
-    let projects, client;
+    let projects = [];
+    let client;
 
     try {
         // Connect to the MongoDB cluster
@@ -23,12 +22,16 @@ export default async function Home() {
             _id: project._id.toString(),
         }));
     } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error?.message || 'Erreur inconnue');
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
     return (
         <>
             <Hero></Hero>
-            <Cards></Cards>
+            <Cards projects={projects}></Cards>
         </>
     );
 }

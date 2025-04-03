@@ -12,6 +12,7 @@ export const createProject = async (formData) => {
         throw new Error('Vous devez être connecté pour créer un projet');
     }
 
+    const { name, description, imageUrl, url, altImage } = formData;
     let client;
 
     try {
@@ -19,7 +20,11 @@ export const createProject = async (formData) => {
         const db = client.db(process.env.MONGODB_DATABASE);
 
         await db.collection('projects').insertOne({
-            name: formData.get('name'),
+            name,
+            description,
+            imageUrl,
+            url,
+            altImage,
             createdAt: new Date(),
             updatedAt: new Date(),
         });
