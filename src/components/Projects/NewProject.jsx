@@ -151,8 +151,11 @@ export default function NewProject({
                     {isAdmin && isGuest && (
                         <div className='flex justify-end'>
                             <button
-                                disabled
-                                type='submit'
+                                onClick={() => {
+                                    toast.error(
+                                        'Vous ne pouvez pas publier un projet en mode invité',
+                                    );
+                                }}
                                 className='px-4 py-2 text-white text-[14px] font-bold rounded-[13px] border hover:cursor-not-allowed'>
                                 VALIDER
                             </button>

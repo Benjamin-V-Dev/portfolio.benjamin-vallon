@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'; // Import Framer Motion
 import { usePathname } from 'next/navigation';
 import { FaRegTrashAlt, FaPen } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
-import Cookies from 'js-cookie';
+import { getCookie } from 'cookies-next';
 import { toast } from 'react-toastify';
 import { deleteProject } from '@/actions/delete-project';
 import NewProject from '../Projects/NewProject';
@@ -109,8 +109,8 @@ export default function Projects({ projects }) {
     const [isGuest, setIsGuest] = useState(false);
 
     useEffect(() => {
-        const guest = Cookies.get('guest');
-        setIsGuest(guest === 'true');
+         const guest = getCookie('guest');
+         setIsGuest(guest?.toString() === 'true');
     }, []);
 
     const cardVariants = {
@@ -263,7 +263,7 @@ function Project({
                             onClick={(e) => {
                                 e.stopPropagation(); // empêche la propagation vers le <a>
                                 e.preventDefault(); // empêche l'ouverture du lien
-                                alert(
+                                toast.error(
                                     'Vous ne pouvez pas supprimer un projet en mode invité',
                                 );
                             }}
@@ -289,15 +289,25 @@ function Project({
                 )}
                 {isAdmin && isGuest && (
                     <div className='absolute bottom-2 right-14 z-10'>
-                        <button
+                        {/* <button
                             onClick={(e) => {
                                 e.stopPropagation(); // empêche la propagation vers le <a>
                                 e.preventDefault(); // empêche l'ouverture du lien
-                                alert(
+                                toast.error(
                                     'Vous ne pouvez pas modifier un projet en mode invité',
                                 );
                             }}
                             className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 hover:cursor-not-allowed'>
+                            <FaPen className='text-white text-xl' />
+                        </button> */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation(); // empêche la propagation vers le <a>
+                                e.preventDefault(); // empêche l'ouverture du lien
+                                setSelectedProject(project);
+                                setIsOpenUpdateProject((prev) => !prev);
+                            }}
+                            className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                             <FaPen className='text-white text-xl' />
                         </button>
                     </div>

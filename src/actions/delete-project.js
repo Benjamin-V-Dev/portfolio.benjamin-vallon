@@ -8,6 +8,9 @@ import { revalidatePath } from 'next/cache';
 export const deleteProject = async (projectId) => {
     // Variable
     const session = await getServerSession(authOptions);
+    if (!session) {
+        throw new Error('Vous devez être connecté pour supprimer un projet');
+    }
 
     // Connecte to the mongoDB cluster
     const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
@@ -36,7 +39,7 @@ export const deleteProject = async (projectId) => {
             .collection('projects')
             .deleteOne({ _id: new ObjectId(projectId) });
     } catch (error) {
-        throw new error(e);
+        throw new error(error);
     }
 
     await client.close();

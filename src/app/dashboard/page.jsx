@@ -3,15 +3,15 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
+import { getCookie } from 'cookies-next';
 
 export default function Dashboard() {
     const { data: session } = useSession();
     const [isGuest, setIsGuest] = useState(false);
 
     useEffect(() => {
-        const guest = Cookies.get('guest');
-        setIsGuest(guest === 'true');
+        const guest = getCookie('guest');
+        setIsGuest(guest?.toString() === 'true');
     }, []);
 
     return (

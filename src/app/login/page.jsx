@@ -2,31 +2,56 @@
 
 // Basé sur un composant de : https://www.hover.dev/components/sign-in
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
-import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { setCookie, getCookie } from 'cookies-next';
+import { signOut, useSession } from 'next-auth/react';
 
-export const Visitor = () => {
-    // function
+export default function Visitor() {
+    const { data: session } = useSession();
     const router = useRouter();
 
-    const onContinue = () => {
-        // Create expiration time
-        const expires = new Date(Date.now() + 60 * 60 * 1000); // 1h
-        // Generate new cookie
-        setCookie('guest', 'true', {
-            expires,
-            path: '/',
-        });
-        // Connected
-        toast.success('Vous êtes connecté en tant que visiteur');
-        // Redirect
-        router.push('/dashboard');
+    const onContinue = async () => {
+        try {
+            // Déconnexion
+            await signOut({ redirect: false });
+
+            // Création du cookie
+            const expires = new Date(Date.now() + 60 * 60 * 1000); // 1h
+            setCookie('guest', 'true', {
+                expires,
+                path: '/',
+            });
+
+            // Attendre un court instant pour s'assurer que le cookie est bien créé
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
+            // Vérification du cookie
+            const guestCookie = getCookie('guest');
+
+            if (guestCookie === 'true') {
+                toast.success('Vous êtes connecté en tant que visiteur');
+                // Utiliser window.location pour forcer une redirection complète
+                window.location.href = '/dashboard';
+            } else {
+                toast.error('Erreur lors de la connexion en tant que visiteur');
+            }
+        } catch (error) {
+            console.error('Erreur dans onContinue:', error);
+            toast.error('Une erreur est survenue');
+        }
     };
+
+    useEffect(() => {
+        const guest = getCookie('guest');
+        setIsGuest(guest === 'true');
+    }, []);
+    const [isGuest, setIsGuest] = useState(false);
+
     return (
         <div className=' text-zinc-200 selection:bg-zinc-600'>
             <motion.div
@@ -51,15 +76,31 @@ export const Visitor = () => {
                     )}>
                     Bon ok, j'avoue ! Je veux visiter le dashboard !
                 </button>
+                {isGuest && (
+                    <p className='text-zinc-400 mt-10'>
+                        ⚠️ Si la redirection automatique ne fonctionne pas{' '}
+                        <Link href='/dashboard' className='text-blue-400'>
+                            cliquez ici
+                        </Link>
+                    </p>
+                )}
+                {session?.user && (
+                    <p className='text-zinc-400 mt-10'>
+                        ⚠️ Si la redirection automatique ne fonctionne pas{' '}
+                        <Link href='/dashboard' className='text-blue-400'>
+                            cliquez ici
+                        </Link>
+                    </p>
+                )}
             </motion.div>
         </div>
     );
-};
+}
 
 const Heading = () => (
     <div>
         <div className='mb-9 mt-6 space-y-1.5'>
-            <h1 className='heading1'>Visiteur</h1>
+            <h1 className='heading1'>Entrée des visiteur</h1>
             <p className='text-zinc-400'>
                 - 👀 Je t'ai vu cliquer sur le cadenas petit curieux ! Tu veux
                 voir l'espace administrateur, c'est ca ?{' '}
@@ -76,5 +117,3 @@ const Heading = () => (
         </div>
     </div>
 );
-
-export default Visitor;
