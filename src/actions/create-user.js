@@ -3,19 +3,27 @@
 import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
 import { checkEmail } from '@/utils/check-emailsyntax';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export const createUser = async (username, email, password) => {
-    // If a field is empty
+    // Vérifie que l'utilisateur est connecté
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        throw new Error('Vous devez être connecté pour créer un utilisateur');
+    }
+
+    // Vérifie que les champs ne sont pas vides
     if (!username || !email || !password) {
-        // Notification
         throw new Error('Aucun champ ne doit être vide');
     }
 
-    // Ckeck if the email is valid
+    // Vérifie que l'email est valide
     if (!checkEmail(email)) {
         throw new Error('Veuillez entrer un email valide');
     }
 
+    // Vérifie que le mot de passe est suffisamment fort
     const isStrongPassword = (password) => {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$/.test(
             password,
@@ -28,61 +36,57 @@ export const createUser = async (username, email, password) => {
         );
     }
 
-    if (email !== process.env.AUTHORIZED_SIGNUP_EMAIL) {
-        throw new Error("Vous n'êtes pas autorisé à créer un compte.");
-    }
-
-    // Connect to the MongoDB cluster
+    // Connexion au cluster MongoDB
     const client = await MongoClient.connect(process.env.MONGODB_CLIENT);
-
-    // Connect to the MongoDB database
     const db = client.db(process.env.MONGODB_DATABASE);
 
+    // Vérification email et username unique
+    await db.collection('users').createIndex({ email: 1 }, { unique: true });
+    await db.collection('users').createIndex({ username: 1 }, { unique: true });
+
+    console.log('Index uniques créés sur email et username');
+
     try {
-        // FIRST : Verify is this email is already used
-        // Select the "users" collection
-        let user = await db
+        // Vérifie si l'email est déjà utilisé
+        const existingEmail = await db
             .collection('users')
             .find({ email })
             .limit(1)
             .toArray();
 
-        // If the email is already used
-        if (user.length !== 0) {
-            await client.close();
-            throw new Error("Vous n'êtes pas autorisé à créer un compte.");
-            // throw new Error('Cet email est déjà utilisé');
+        if (existingEmail.length !== 0) {
+            throw new Error('Cet email est déjà utilisé');
         }
 
-        // SECOND : Verify is this pseudo is already used
-        // Select the "users" collection
-        username = await db
+        // Vérifie si le nom d'utilisateur est déjà utilisé
+        const existingUsername = await db
             .collection('users')
             .find({ username })
             .limit(1)
             .toArray();
 
-        // If the email is already used
-        if (username.length !== 0) {
-            await client.close();
+        if (existingUsername.length !== 0) {
             throw new Error("Ce nom d'utilisateur est déjà utilisé");
         }
 
-        // THIRD : Encrypt the password
+        // Chiffre le mot de passe
         const encryptedPassword = await bcrypt.hash(password, 10);
 
-        // FOURTH : Create the user
+        // Crée le nouvel utilisateur avec un rôle par défaut "member" et un statut "suspended"
         await db.collection('users').insertOne({
             username,
             email,
             password: encryptedPassword,
+            role: 'member',
+            status: 'suspended',
             creation: new Date(),
         });
     } catch (error) {
+        throw new Error(
+            error?.message || "Erreur lors de la création de l'utilisateur",
+        );
+    } finally {
+        // Ferme la connexion à la base de données dans tous les cas
         await client.close();
-        throw new Error(error);
     }
-    
-    // Close the connection to the MongoDB cluster
-    await client.close();
 };
