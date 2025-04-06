@@ -10,7 +10,7 @@ export const createUser = async (username, email, password) => {
     // Vérifie que l'utilisateur est connecté
     const session = await getServerSession(authOptions);
     if (!session) {
-        throw new Error('Vous devez être connecté pour créer un utilisateur');
+        throw new Error('Vous ne pouvez pas créer un utilisateur en mode invité.');
     }
 
     // Vérifie que les champs ne sont pas vides
