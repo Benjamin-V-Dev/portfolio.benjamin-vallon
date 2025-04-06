@@ -5,32 +5,32 @@ import { MongoClient } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 
-export const createProject = async (formData) => {
+export const createSkills = async (formData) => {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-        throw new Error('Vous ne pouvez pas créer un projet en mode invité.');
+        throw new Error('vous ne pouvez pas créer une compétence en mode invité.');
     }
 
-    const { name, description, imageUrl, url, altImage } = formData;
+    const { name, description, imageUrl, title, category } = formData;
     let client;
 
     try {
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        await db.collection('projects').insertOne({
+        await db.collection('skills').insertOne({
             name,
             description,
             imageUrl,
-            url,
-            altImage,
+            title,
+            category,
             createdAt: new Date(),
             updatedAt: new Date(),
         });
     } catch (error) {
         throw new Error(
-            error?.message || 'Erreur inconnue lors de la création du projet',
+            error?.message || 'Erreur inconnue lors de la création de la compétence',
         );
     } finally {
         if (client) {

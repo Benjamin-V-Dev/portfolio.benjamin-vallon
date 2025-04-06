@@ -5,27 +5,27 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 
-export const updateProject = async (projectId, formData) => {
+export const updateSkill = async (skillId, formData) => {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-        throw new Error('Vous ne pouvez pas modifier un projet en mode invité.');
+        throw new Error('Vous ne pouvez pas modifier une compétence en mode invité.');
     }
 
-    const { name, description, imageUrl, url, altImage } = formData;
+    const { name, description, imageUrl, title, category } = formData;
     let client;
 
     try {
         client = await MongoClient.connect(process.env.MONGODB_CLIENT);
         const db = client.db(process.env.MONGODB_DATABASE);
 
-        // Vérifie que le projet existe (optionnel mais conseillé)
-        const existingProject = await db
-            .collection('projects')
-            .findOne({ _id: new ObjectId(projectId) });
+        // Vérifie que la compétence existe (optionnel mais conseillé)
+        const existingSkill = await db
+            .collection('skills')
+            .findOne({ _id: new ObjectId(skillId) });
 
-        if (!existingProject) {
-            throw new Error('Projet non trouvé');
+        if (!existingSkill) {
+            throw new Error('Compétence non trouvée');
         }
 
         // Tu peux activer ce bloc si tu veux limiter la modif au propriétaire :
@@ -34,22 +34,22 @@ export const updateProject = async (projectId, formData) => {
         // }
 
         // Mise à jour
-        await db.collection('projects').updateOne(
-            { _id: new ObjectId(projectId) },
+        await db.collection('skills').updateOne(
+            { _id: new ObjectId(skillId) },
             {
                 $set: {
                     name,
                     description,
                     imageUrl,
-                    url,
-                    altImage,
+                    title,
+                    category,
                     updatedAt: new Date(),
                 },
             },
         );
     } catch (error) {
         throw new Error(
-            error?.message || 'Erreur lors de la mise à jour du projet',
+            error?.message || 'Erreur lors de la mise à jour de la compétence',
         );
     } finally {
         if (client) {

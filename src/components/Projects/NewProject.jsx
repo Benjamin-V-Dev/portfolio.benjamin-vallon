@@ -34,7 +34,7 @@ export default function NewProject({
         try {
             await loginAsAdmin();
 
-            const imageUrl = await uploadImageToFirebase(image);
+            const imageUrl = await uploadImageToFirebase(image, 'projects');
 
             await createProject({ name, description, imageUrl, url, altImage });
 

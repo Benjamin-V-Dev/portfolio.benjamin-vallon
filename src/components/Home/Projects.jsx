@@ -289,17 +289,6 @@ function Project({
                 )}
                 {isAdmin && isGuest && (
                     <div className='absolute bottom-2 right-14 z-10'>
-                        {/* <button
-                            onClick={(e) => {
-                                e.stopPropagation(); // empêche la propagation vers le <a>
-                                e.preventDefault(); // empêche l'ouverture du lien
-                                toast.error(
-                                    'Vous ne pouvez pas modifier un projet en mode invité',
-                                );
-                            }}
-                            className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 hover:cursor-not-allowed'>
-                            <FaPen className='text-white text-xl' />
-                        </button> */}
                         <button
                             onClick={(e) => {
                                 e.stopPropagation(); // empêche la propagation vers le <a>

@@ -48,7 +48,7 @@ export default function UpdateProject({
             let imageUrlToUse = selectedProject.imageUrl;
 
             if (image) {
-                imageUrlToUse = await uploadImageToFirebase(image);
+                imageUrlToUse = await uploadImageToFirebase(image, 'projects');
             }
 
             await updateProject(selectedProject._id, {
