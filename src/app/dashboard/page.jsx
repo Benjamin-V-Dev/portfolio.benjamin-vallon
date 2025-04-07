@@ -14,13 +14,19 @@ export default function DashboardPage() {
             url: '/dashboard/projects',
             title: 'Projets',
             subtitle:
-                'Gestion des projets : Création, modification, suppression et mise en relation avec la collection de compétences',
+                'Gestion des projets : création, modification, suppression et mise en relation avec la collection de compétences',
         },
         {
             url: '/dashboard/skills',
             title: 'Compétences',
             subtitle:
-                'Gestion des compétences : Création, modification, suppression et mise en relation avec la collection de compétences',
+                'Gestion des compétences : création, modification, suppression',
+        },
+        {
+            url: '/dashboard/articles',
+            title: 'Articles',
+            subtitle:
+                'Gestion des articles : création, modification, suppression',
         },
     ];
     // Variants pour les animations
