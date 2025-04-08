@@ -12,7 +12,7 @@ export const createProject = async (formData) => {
         throw new Error('Vous ne pouvez pas créer un projet en mode invité.');
     }
 
-    const { name, description, imageUrl, url, altImage } = formData;
+    const { name, description, imageUrl, url, tags, order } = formData;
     let client;
 
     try {
@@ -24,7 +24,8 @@ export const createProject = async (formData) => {
             description,
             imageUrl,
             url,
-            altImage,
+            tags,
+            order,
             createdAt: new Date(),
             updatedAt: new Date(),
         });
