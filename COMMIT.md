@@ -19,17 +19,17 @@ Ce projet suit la convention **Conventional Commits**, rédigée à la main (san
 
 | Type        | Description                                                                 | Exemple |
 |-------------|-----------------------------------------------------------------------------|---------|
-| `feat`      | ✨ Nouvelle fonctionnalité                                                   | `feat: ajout de la page projets` |
+| `feat`      | ✨ Nouvelle fonctionnalité                                                  | `feat: ajout de la page projets` |
 | `fix`       | 🐛 Correction de bug                                                        | `fix: corrige le scroll sur mobile` |
 | `docs`      | 📚 Modification de documentation uniquement                                 | `docs: mise à jour du README` |
 | `style`     | 🎨 Modifications visuelles (indentation, formatage, pas de code métier)     | `style: formatage auto avec Prettier` |
 | `refactor`  | 🔧 Refonte du code sans ajout de feature ni correction                      | `refactor: simplifie la logique du header` |
 | `perf`      | ⚡️ Amélioration des performances                                            | `perf: améliore le lazy loading des images` |
-| `test`      | ✅ Ajout ou modification de tests                                            | `test: ajoute un test unitaire pour le composant Login` |
+| `test`      | ✅ Ajout ou modification de tests                                           | `test: ajoute un test unitaire pour le composant Login` |
 | `build`     | 🛠️ Changements liés à la compilation, déploiement ou config                 | `build: configuration de Vercel` |
-| `ci`        | 🤖 Modifications liées à l'intégration continue                              | `ci: ajout du workflow GitHub Actions` |
+| `ci`        | 🤖 Modifications liées à l'intégration continue                             | `ci: ajout du workflow GitHub Actions` |
 | `chore`     | 🔧 Autres tâches (MAJ dépendances, nettoyage, renommage de fichiers, etc.)  | `chore: suppression des fichiers inutiles` |
-| `revert`    | ↩️ Annule un commit précédent                                                | `revert: annule le fix du formulaire` |
+| `revert`    | ↩️ Annule un commit précédent                                               | `revert: annule le fix du formulaire` |
 
 ---
 

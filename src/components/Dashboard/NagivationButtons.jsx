@@ -8,7 +8,7 @@ export default function NavigationButtons() {
 
     return (
         <div className='hidden md:block'>
-            <div className='absolute top-[100px] left-[25px] flex gap-4'>
+            <div className='fixed top-[100px] left-[25px] flex gap-4'>
                 <button
                     onClick={() => router.back()}
                     className='p-2 rounded hover:bg-customGrayTags transition'
