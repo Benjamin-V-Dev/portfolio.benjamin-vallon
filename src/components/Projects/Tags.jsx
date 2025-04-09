@@ -3,13 +3,8 @@ import React from 'react';
 import { AnimatedTooltip } from '../UI/animated-tooltip';
 
 export function Tags({ tags }) {
-    // 🔤 Trie les tags par ordre alphabétique (insensible à la casse)
-    const sortedTags = [...tags].sort((a, b) =>
-        a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }),
-    );
-
-    // On transforme les tags pour qu'ils correspondent à l’API attendue par AnimatedTooltip
-    const items = sortedTags.map((tag, index) => ({
+    // Suppression du tri local, on considère que les tags sont déjà triés par l’API
+    const items = tags.map((tag, index) => ({
         id: index,
         name: tag.name,
         designation: tag.category || '',

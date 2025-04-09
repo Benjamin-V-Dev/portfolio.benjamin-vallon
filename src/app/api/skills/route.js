@@ -7,6 +7,22 @@ export async function GET() {
     const skills = await db.collection('skills').find({}).toArray();
     await client.close();
 
+    const categoryOrder = [
+        'Frontend',
+        'Intégration web',
+        'Backend',
+        'Déploiement',
+        'Application mobile',
+        'Autres connaissances',
+    ];
+
+    // Tri personnalisé
+    skills.sort((a, b) => {
+        const indexA = categoryOrder.indexOf(a.category);
+        const indexB = categoryOrder.indexOf(b.category);
+        return indexA - indexB;
+    });
+
     return Response.json(
         skills.map((s) => ({
             _id: s._id.toString(),
