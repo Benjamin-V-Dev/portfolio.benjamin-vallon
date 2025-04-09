@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }) {
     const isGuest = cookieStore.get('guest')?.value === 'true';
 
     if (!session && !isGuest) {
-        redirect('/');
+        redirect('/login');
     }
 
     return (
