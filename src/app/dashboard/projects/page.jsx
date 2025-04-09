@@ -29,7 +29,7 @@ export default async function ProjectsPage() {
     }
     return (
         <div>
-            <h1 className='heading1 text-center'>Mes projets</h1>
+            <h1 className='heading1 text-center pt-10'>Mes projets</h1>
             <Cards projects={projects} />
         </div>
     );

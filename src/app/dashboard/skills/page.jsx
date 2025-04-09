@@ -31,7 +31,7 @@ export default async function SkillsPage() {
 
     return (
         <div>
-            <h1 className='heading1 text-center'>Mes compétences</h1>
+            <h1 className='heading1 text-center pt-10'>Compétences</h1>
             <BtnNewSkill />
             {Object.entries(groupedSkills).map(([category, skills]) => (
                 <Cards key={category} category={category} skills={skills} />
