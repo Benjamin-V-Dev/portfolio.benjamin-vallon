@@ -17,10 +17,10 @@ const roboto = Roboto({
 
 export const metadata = {
     title: {
-        default: 'Benjamin Vallon : Développeur web frontend', //Titre utilisé également pour Twitter et OG (max 70 caractères)
+        default: 'Benjamin Vallon : Développeur web Fullstack', //Titre utilisé également pour Twitter et OG (max 70 caractères)
     },
     description:
-        "Bienvenue sur mon portfolio, prenez le temps de découvrir mes projets, et n'hésitez pas à me contacter si besoin.", //description utilisé également pour Twitter et OG (max 200 caractères)
+        "Bienvenue sur mon portfolio 🙂", //description utilisé également pour Twitter et OG (max 200 caractères)
     twitter: {
         card: 'summary_large_image',
     },
