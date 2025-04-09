@@ -13,6 +13,7 @@ module.exports = (env) => {
                 MONGODB_DATABASE: 'portfolio',
                 NEXTAUTH_SECRET:
                     '7w?hnb3J?CZW?JYd2R5NFwMKULML508u8ChL?l6Dt6C32I0z0tKqsAgf1XI@lPqHITJtcyFCmV?$G6@7',
+                NEXTAUTH_URL: 'http://localhost:3000',
             },
             images: {
                 remotePatterns: [
@@ -33,6 +34,7 @@ module.exports = (env) => {
                 MONGODB_DATABASE: 'portfolio',
                 NEXTAUTH_SECRET:
                     '7w?hnb3J?CZW?JYd2R5NFwMKULML508u8ChL?l6Dt6C32I0z0tKqsAgf1XI@lPqHITJtcyFCmV?$G6@7',
+                NEXTAUTH_URL: 'https://portfolio-benjamin-vallon.vercel.app',
             },
             images: {
                 remotePatterns: [
