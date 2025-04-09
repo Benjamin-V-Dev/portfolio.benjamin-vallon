@@ -17,15 +17,11 @@ export async function middleware(request) {
         isAuthenticated = true;
     }
 
-    if (!isAuthenticated) {
-        // Redirection vers la page de connexion si non authentifié
-        const url = request.nextUrl.clone();
-        url.pathname = '/login';
-        return NextResponse.redirect(url);
+    // Vérification si l'utilisateur est connecté
+    if (hasCookie('__Secure-next-auth.session.token', { cookies })) {
+        isAuthenticated = true;
     }
-    return NextResponse.next();
 }
-
 export const config = {
     matcher: ['/dashboard'],
 };
