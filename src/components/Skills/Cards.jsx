@@ -8,8 +8,9 @@ import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
 import { toast } from 'react-toastify';
 import { deleteSkills } from '@/actions/delete-skills';
-import UpdateSkill from './UpdateSkill';
-const Cards = ({ skills,skill,category }) => {
+import SkillForm from './SkillForm';
+
+const Cards = ({ skills, category }) => {
     return (
         <section className='my-10'>
             <h2 className='text-2xl font-bold mb-4'>{category}</h2>
@@ -23,21 +24,17 @@ const Cards = ({ skills,skill,category }) => {
 };
 
 const ShimmerBorderCard = ({ skill }) => {
-    // States
-    const [isOpenCreateSkill, setIsOpenCreateSkill] = useState(false);
     const [isOpenUpdateSkill, setIsOpenUpdateSkill] = useState(false);
-    const [selectedSkill, setSelectedSkill] = useState(null);
-    //Pathname
     const pathname = usePathname();
     const isAdmin = pathname === '/dashboard/skills';
-    // Session and Guest
     const { data: session } = useSession();
     const [isGuest, setIsGuest] = useState(false);
+
     useEffect(() => {
         const guest = getCookie('guest');
         setIsGuest(guest?.toString() === 'true');
     }, []);
-    // Fonction de suppression d'une compétence
+
     const onDeleteSkill = async () => {
         if (!confirm('Supprimer cette compétence ?')) return;
 
@@ -48,15 +45,16 @@ const ShimmerBorderCard = ({ skill }) => {
             toast.error(error.message);
         }
     };
+
     return (
         <div>
             {isOpenUpdateSkill && (
-                <UpdateSkill
-                    selectedSkill={selectedSkill}
-                    setSelectedSkill={setSelectedSkill}
-                    setIsOpenUpdateSkill={setIsOpenUpdateSkill}
+                <SkillForm
+                    mode='edit'
+                    initialData={skill}
+                    onClose={() => setIsOpenUpdateSkill(false)}
+                    onSuccess={() => setIsOpenUpdateSkill(false)}
                     isAdmin={isAdmin}
-                    session={session}
                     isGuest={isGuest}
                 />
             )}
@@ -74,10 +72,6 @@ const ShimmerBorderCard = ({ skill }) => {
                     <h2 className='relative z-10 mb-4 w-full heading2 text-center'>
                         {skill.name}
                     </h2>
-                    <h3 className='relative z-10 mb-4 w-full heading3 text-center'>
-                        {skill.title}
-                    </h3>
-                    <p className='relative z-10'>{skill.description}</p>
                 </div>
 
                 <motion.div
@@ -91,50 +85,38 @@ const ShimmerBorderCard = ({ skill }) => {
                     }}
                     className='absolute inset-0 z-0 bg-gradient-to-br from-indigo-200 via-indigo-200/0 to-indigo-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100'
                 />
-                {/* Bouton de suppression */}
-                {isAdmin && session?.user && (
+
+                {isAdmin && (
                     <div className='absolute bottom-2 right-2 z-10'>
                         <button
                             onClick={(e) => {
-                                onDeleteSkill();
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (isGuest) {
+                                    toast.error(
+                                        'Vous ne pouvez pas supprimer une compétence en mode invité',
+                                    );
+                                } else {
+                                    onDeleteSkill();
+                                }
                             }}
-                            className='w-10 h-10 flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600 hover:cursor-pointer'>
+                            className={`w-10 h-10 flex items-center justify-center rounded-full ${
+                                isGuest
+                                    ? 'bg-red-500/60 cursor-not-allowed'
+                                    : 'bg-red-500 hover:bg-red-600'
+                            }`}>
                             <FaRegTrashAlt className='text-white text-xl' />
                         </button>
                     </div>
                 )}
-                {isAdmin && isGuest && (
-                    <div className='absolute bottom-2 right-2 z-10'>
-                        <button
-                            onClick={(e) => {
-                                toast.error(
-                                    'Vous ne pouvez pas supprimer une compétence en mode invité',
-                                );
-                            }}
-                            className='w-10 h-10 flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600 hover:cursor-not-allowed'>
-                            <FaRegTrashAlt className='text-white text-xl' />
-                        </button>
-                    </div>
-                )}
-                {/* Bouton de modification */}
-                {isAdmin && session?.user && (
+
+                {isAdmin && (
                     <div className='absolute bottom-2 right-14 z-10'>
                         <button
                             onClick={(e) => {
-                                setSelectedSkill(skill);
-                                setIsOpenUpdateSkill((prev) => !prev);
-                            }}
-                            className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                            <FaPen className='text-white text-xl' />
-                        </button>
-                    </div>
-                )}
-                {isAdmin && isGuest && (
-                    <div className='absolute bottom-2 right-14 z-10'>
-                        <button
-                            onClick={(e) => {
-                                setSelectedSkill(skill);
-                                setIsOpenUpdateSkill((prev) => !prev);
+                                e.stopPropagation();
+                                e.preventDefault();
+                                setIsOpenUpdateSkill(true);
                             }}
                             className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                             <FaPen className='text-white text-xl' />

@@ -1,5 +1,5 @@
+import BtnNewSkill from '@/components/Skills/BtnNewSkill';
 import Cards from '@/components/Skills/Cards';
-import NewSkill from '@/components/Skills/NewSkill';
 import { MongoClient } from 'mongodb';
 
 export default async function SkillsPage() {
@@ -27,11 +27,12 @@ export default async function SkillsPage() {
         acc[skill.category].push(skill);
         return acc;
     }, {});
+    
 
     return (
         <div>
             <h1 className='heading1 text-center'>Mes compétences</h1>
-            <NewSkill />
+            <BtnNewSkill />
             {Object.entries(groupedSkills).map(([category, skills]) => (
                 <Cards key={category} category={category} skills={skills} />
             ))}

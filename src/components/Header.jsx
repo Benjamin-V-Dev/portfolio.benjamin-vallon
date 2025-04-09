@@ -81,6 +81,19 @@ export default function Header() {
                         </Link>
                     )}
 
+                    {session?.user?.email && (
+                        <Link
+                            href='/dashboard'
+                            className='hidden lg:block bg-customBlue rounded-[20px] px-7 py-3 group overflow-hidden relative h-[50px] cursor-pointer'>
+                            {/* Texte */}
+                            <p className='text-[15px] font-extrabold transform transition-transform duration-300 group-hover:-translate-y-[200%]'>
+                                Dashboard
+                            </p>
+                            {/* Icône */}
+                            <Lock className='absolute left-1/2 bottom-[-50px] transform -translate-x-1/2 transition-all duration-300 group-hover:bottom-3' />
+                        </Link>
+                    )}
+
                     {session?.user?.email ? (
                         <button
                             onClick={() => signOut({ callbackUrl: '/' })}

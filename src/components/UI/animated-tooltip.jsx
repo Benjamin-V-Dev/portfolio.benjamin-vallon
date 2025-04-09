@@ -71,7 +71,7 @@ export const AnimatedTooltip = ({ items }) => {
                         )}
                     </AnimatePresence>
                     <div
-                        className='relative h-14 w-14 rounded-full border-2 border-white transition duration-500 group-hover:z-30 group-hover:scale-105 bg-customGrayTags hover:cursor-default'
+                        className='relative h-10 w-10 md:h-14 md:w-14 rounded-full border-2 border-white transition duration-500 group-hover:z-30 group-hover:scale-105 bg-customGrayTags hover:cursor-default'
                         onClick={(e) => e.stopPropagation()}
                         onMouseDown={(e) => e.stopPropagation()}>
                         <Image

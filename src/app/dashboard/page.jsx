@@ -21,13 +21,7 @@ export default function DashboardPage() {
             title: 'Compétences',
             subtitle:
                 'Gestion des compétences : création, modification, suppression',
-        },
-        {
-            url: '/dashboard/articles',
-            title: 'Articles',
-            subtitle:
-                'Gestion des articles : création, modification, suppression',
-        },
+        }
     ];
     // Variants pour les animations
     const containerVariants = {

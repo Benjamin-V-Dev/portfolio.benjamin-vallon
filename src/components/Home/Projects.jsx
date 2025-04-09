@@ -9,9 +9,8 @@ import { useSession } from 'next-auth/react';
 import { getCookie } from 'cookies-next';
 import { toast } from 'react-toastify';
 import { deleteProject } from '@/actions/delete-project';
-import NewProject from '../Projects/NewProject';
-import UpdateProject from '../Projects/UpdateProject';
 import { Tags } from '../Projects/Tags';
+import ProjectForm from '../Projects/ProjectForm';
 
 export default function Projects({ projects }) {
     const [isOpenCreateProject, setIsOpenCreateProject] = useState(false);
@@ -48,30 +47,37 @@ export default function Projects({ projects }) {
             {isAdmin && (
                 <button
                     onClick={() => setIsOpenCreateProject(!isOpenCreateProject)}
-                    className='bg-customGrayTags px-4 py-2 text-white text-lg font-bold rounded-[13px] hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer'>
+                    className='bg-customGrayTags px-4 py-2 text-white text-sm xl:text-lg font-bold rounded-[13px] hover:scale-110 transition-all duration-300 ease-in-out cursor-pointer mt-10 ms-2'>
                     Ajouter un projet
                 </button>
             )}
             {isOpenCreateProject && (
-                <NewProject
-                    setIsOpenCreateProject={setIsOpenCreateProject}
+                <ProjectForm
+                    mode='create'
+                    onClose={() => setIsOpenCreateProject(false)}
+                    onSuccess={() => setIsOpenCreateProject(false)}
                     isAdmin={isAdmin}
-                    session={session}
                     isGuest={isGuest}
                 />
             )}
             {isOpenUpdateProject && (
-                <UpdateProject
-                    selectedProject={selectedProject}
-                    setSelectedProject={setSelectedProject}
-                    setIsOpenUpdateProject={setIsOpenUpdateProject}
+                <ProjectForm
+                    mode='edit'
+                    initialData={selectedProject}
+                    onClose={() => {
+                        setIsOpenUpdateProject(false);
+                        setSelectedProject(null);
+                    }}
+                    onSuccess={() => {
+                        setIsOpenUpdateProject(false);
+                        setSelectedProject(null);
+                    }}
                     isAdmin={isAdmin}
-                    session={session}
                     isGuest={isGuest}
                 />
             )}
 
-            <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 p-4 my-[50px] md:my-[100px]'>
+            <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3  my-[50px] md:my-[100px] mx-auto'>
                 {orderedProjects.map((project) => (
                     <motion.div key={project._id}>
                         <Project
