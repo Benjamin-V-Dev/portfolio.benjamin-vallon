@@ -1,5 +1,4 @@
 import Cards from '@/components/Home/Projects';
-import NewProject from '@/components/Projects/NewProject';
 import { MongoClient } from 'mongodb';
 
 export default async function ProjectsPage() {

@@ -80,6 +80,17 @@ export default function MailModal({ isOpen, setIsOpen }) {
         }
     };
 
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(() => {
+                containerRef.current?.scrollTo({
+                    top: containerRef.current.scrollHeight,
+                    behavior: 'auto', // tu peux mettre 'smooth' si tu préfères
+                });
+            }, 50); // petit délai pour laisser React rendre
+        }
+    }, [isOpen]);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -157,7 +168,23 @@ const TerminalBody = ({
 
     useEffect(() => {
         scrollToBottom();
+    }, []);
+
+    useEffect(() => {
+        scrollToBottom();
     }, [questions]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter' && !curQuestion && !complete && !sending) {
+                e.preventDefault();
+                handleSend();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [curQuestion, complete, sending]);
 
     const onSubmit = (e) => {
         e.preventDefault();

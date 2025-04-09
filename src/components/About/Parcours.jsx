@@ -121,7 +121,7 @@ export default function Parcours() {
                             </div>
                         </div>
                         <div className='w-[45%] flex flex-col'>
-                            <div className='bg-customGrayTags rounded-[20px] p-3 max-w-[350px]'>
+                            <div className='bg-customGrayTags rounded-[10px] md:rounded-[20px] p-3 max-w-[350px]'>
                                 <a href={parcours.url} target='_blank' rel='noopener noreferrer' className='text-[15px] font-bold'>
                                     {parcours.titre}
                                 </a>

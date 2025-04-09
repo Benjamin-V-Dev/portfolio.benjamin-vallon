@@ -7,7 +7,7 @@
     --font-roboto: 'Roboto', sans-serif;
 }
 main {
-    @apply mt-[200px] px-4 mx-auto max-w-[1500px];
+    @apply mt-[200px] px-1 sm:p-4 mx-auto max-w-[1500px];
 }
 
 /* .mainDashboard {

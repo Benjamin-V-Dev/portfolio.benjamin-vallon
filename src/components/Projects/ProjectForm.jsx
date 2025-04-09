@@ -1,18 +1,18 @@
 'use client';
-import { updateProject } from '@/actions/update-project';
-import { useSession } from 'next-auth/react';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { uploadImageToFirebase } from '@/firebase/uploadImageToFirebase';
 import { loginAsAdmin } from '@/firebase/loginAsAdmin';
-import { FaTimes } from 'react-icons/fa';
+import { createProject } from '@/actions/create-project';
+import { updateProject } from '@/actions/update-project';
 
-export default function UpdateProject({
-    selectedProject,
-    setIsOpenUpdateProject,
-    setSelectedProject,
+export default function ProjectForm({
+    mode = 'create', // "create" ou "edit"
+    initialData = null, // Pour le mode "edit"
+    onClose,
+    onSuccess,
     isAdmin,
-    session,
     isGuest,
 }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,21 +22,23 @@ export default function UpdateProject({
     const [url, setUrl] = useState('');
     const [order, setOrder] = useState(1);
     const [maxOrder, setMaxOrder] = useState(1);
-    const fileInputRef = useRef(null);
-
     const [skills, setSkills] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
+    const fileInputRef = useRef(null);
 
+    // Login Firebase admin
     useEffect(() => {
         loginAsAdmin();
     }, []);
 
+    // Récupération de l'ordre max
     useEffect(() => {
         const fetchMaxOrder = async () => {
             try {
                 const res = await fetch('/api/projects/max-order');
                 const data = await res.json();
-                setMaxOrder(data.maxOrder);
+                setMaxOrder(data.maxOrder + (mode === 'create' ? 1 : 0));
+                setOrder(mode === 'create' ? data.maxOrder + 1 : order);
             } catch (err) {
                 console.error('Erreur en récupérant maxOrder :', err);
             }
@@ -45,26 +47,23 @@ export default function UpdateProject({
         fetchMaxOrder();
     }, []);
 
+    // Si en mode édition, on préremplit le formulaire
     useEffect(() => {
-        if (selectedProject) {
-            setName(selectedProject.name || '');
-            setDescription(selectedProject.description || '');
-            setUrl(selectedProject.url || '');
-            setSelectedSkills(selectedProject.tags || []);
-            setOrder(selectedProject.order || 1);
+        if (mode === 'edit' && initialData) {
+            setName(initialData.name || '');
+            setDescription(initialData.description || '');
+            setUrl(initialData.url || '');
+            setOrder(initialData.order || 1);
+            setSelectedSkills(initialData.tags || []);
         }
-    }, [selectedProject]);
+    }, [initialData, mode]);
 
+    // Récupération des skills triés par le backend
     useEffect(() => {
         const fetchSkills = async () => {
             const res = await fetch('/api/skills');
             const data = await res.json();
-
-            const sortedSkills = data.sort((a, b) =>
-                a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }),
-            );
-
-            setSkills(sortedSkills);
+            setSkills(data);
         };
 
         fetchSkills();
@@ -73,28 +72,47 @@ export default function UpdateProject({
     const onSubmit = async (e) => {
         e.preventDefault();
         if (isLoading) return;
+        if (mode === 'create' && !image)
+            return toast.error('Aucune image sélectionnée');
 
         setIsLoading(true);
         try {
             await loginAsAdmin();
 
-            let imageUrlToUse = selectedProject.imageUrl;
+            let imageUrlToUse = initialData?.imageUrl || null;
+
             if (image) {
                 imageUrlToUse = await uploadImageToFirebase(image, 'projects');
             }
 
-            await updateProject(selectedProject._id, {
+            const payload = {
                 name,
                 description,
                 imageUrl: imageUrlToUse,
                 url,
                 tags: selectedSkills,
                 order,
-            });
+            };
 
-            toast.success('Projet modifié !');
-            setIsOpenUpdateProject(false);
-            setSelectedProject(null);
+            if (mode === 'create') {
+                await createProject(payload);
+                toast.success('Projet ajouté !');
+            } else {
+                await updateProject(initialData._id, payload);
+                toast.success('Projet modifié !');
+            }
+
+            // Reset le formulaire
+            if (fileInputRef.current) fileInputRef.current.value = '';
+            if (onSuccess) onSuccess();
+
+            setName('');
+            setDescription('');
+            setImage(null);
+            setUrl('');
+            setOrder(1);
+            setSelectedSkills([]);
+            onClose();
         } catch (error) {
             toast.error(error.message);
         } finally {
@@ -103,21 +121,26 @@ export default function UpdateProject({
     };
 
     return (
-        <div className='fixed inset-0 z-40 backdrop-blur-sm bg-black/30'>
-            <div className='w-full max-w-2xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-customGrayTags p-6 rounded-xl shadow-lg'>
+        <div className='fixed inset-0 z-40 backdrop-blur-sm bg-black/30 mx-1'>
+            <div className='w-full max-w-2xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-customGrayTags p-6 rounded md:rounded-xl shadow-lg max-h-[90vh] overflow-y-auto scrollbar-hide'>
                 <div className='flex justify-end'>
                     <button
-                        onClick={() => setIsOpenUpdateProject((prev) => !prev)}
+                        onClick={onClose}
                         className='hover:scale-110 transition-all duration-300 ease-in-out'>
                         <FaTimes className='text-white text-xl' />
                     </button>
                 </div>
-                <h2 className='heading2 text-center'>Modifier un projet</h2>
+                <h2 className='heading2 text-center my-4'>
+                    {mode === 'edit'
+                        ? 'Modifier un projet'
+                        : 'Ajouter un projet'}
+                </h2>
                 <form onSubmit={onSubmit} className='w-full'>
+                    {/* Image */}
                     <div className='mb-3'>
                         <label
                             htmlFor='image'
-                            className='mb-1.5 block text-zinc-400'>
+                            className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                             Image du projet
                         </label>
                         <input
@@ -129,10 +152,11 @@ export default function UpdateProject({
                         />
                     </div>
 
+                    {/* Nom */}
                     <div className='mb-3'>
                         <label
                             htmlFor='name'
-                            className='mb-1.5 block text-zinc-400'>
+                            className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                             Nom du projet
                         </label>
                         <input
@@ -144,7 +168,8 @@ export default function UpdateProject({
                         />
                     </div>
 
-                    <label className='mb-1.5 block text-zinc-400'>
+                    {/* Compétences */}
+                    <label className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                         Compétences liées au projet
                     </label>
                     <div className='mb-3 w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2'>
@@ -187,25 +212,27 @@ export default function UpdateProject({
                         </div>
                     </div>
 
+                    {/* Description */}
                     <div className='mb-3'>
                         <label
                             htmlFor='description'
-                            className='mb-1.5 block text-zinc-400'>
+                            className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                             Description
                         </label>
                         <textarea
                             required
-                            rows={5}
+                            rows={3}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className='w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2'
                         />
                     </div>
 
+                    {/* URL */}
                     <div className='mb-3'>
                         <label
                             htmlFor='url'
-                            className='mb-1.5 block text-zinc-400'>
+                            className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                             Url du projet
                         </label>
                         <input
@@ -217,10 +244,11 @@ export default function UpdateProject({
                         />
                     </div>
 
+                    {/* Ordre */}
                     <div className='mb-3'>
                         <label
                             htmlFor='order'
-                            className='mb-1.5 block text-zinc-400'>
+                            className='mb-1.5 block text-zinc-400 text-xs sm:text-base'>
                             Ordre d’affichage
                         </label>
                         <input
@@ -238,7 +266,8 @@ export default function UpdateProject({
                         </p>
                     </div>
 
-                    {isAdmin && session?.user && (
+                    {/* Bouton Submit */}
+                    {isAdmin && !isGuest && (
                         <div className='flex justify-end'>
                             <button
                                 type='submit'
@@ -252,13 +281,16 @@ export default function UpdateProject({
                             </button>
                         </div>
                     )}
-                    {isAdmin && isGuest && !session?.user && (
+
+                    {isAdmin && isGuest && (
                         <div className='flex justify-end'>
                             <button
                                 type='button'
                                 onClick={() =>
                                     toast.error(
-                                        'Vous ne pouvez pas modifier un projet en mode invité',
+                                        mode === 'edit'
+                                            ? 'Vous ne pouvez pas modifier un projet en mode invité'
+                                            : 'Vous ne pouvez pas publier un projet en mode invité',
                                     )
                                 }
                                 className='px-4 py-2 text-white text-[14px] font-bold rounded-[13px] border hover:cursor-not-allowed'>
