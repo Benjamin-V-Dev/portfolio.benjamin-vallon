@@ -58,9 +58,9 @@ export default function DashboardPage() {
             )}
             {!session?.user && isGuest && (
                 <p className='text-center'>
-                    Le mode invité permets de parcourir le dashboard sans
-                    interagir avec le contenu. Les fonctionnalités d'intéraction
-                    (publier, supprimer, modifier ...) seront bloqués.
+                    Le mode invité permet de parcourir le dashboard sans
+                    interagir avec le contenu. Les fonctionnalités d'interaction
+                    (publier, supprimer, modifier ...) seront bloquées.
                 </p>
             )}
             <motion.div

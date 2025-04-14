@@ -100,10 +100,10 @@ export default function Visitor() {
 const Heading = () => (
     <div>
         <div className='mb-9 mt-6 space-y-1.5'>
-            <h1 className='heading1'>Entrée des visiteur</h1>
+            <h1 className='heading1'>Entrée des visiteurs</h1>
             <p className='text-zinc-400'>
                 - 👀 Je t'ai vu cliquer sur le cadenas petit curieux ! Tu veux
-                voir l'espace administrateur, c'est ca ?{' '}
+                voir l'espace administrateur, c'est ça ?{' '}
             </p>
             <p className='text-zinc-400'>
                 - Non, je suis l'administrateur et je veux{' '}
@@ -112,7 +112,7 @@ const Heading = () => (
                 </Link>
             </p>
             <p className='text-zinc-400'>
-                - 😒 tu es bien sur de ce que tu avance ?
+                - 😒 Es-tu bien sûr de ce que tu avances ?
             </p>
         </div>
     </div>
