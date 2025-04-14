@@ -148,7 +148,7 @@ function Project({
                     </div>
                 </div>
 
-                <div className='h-32'>
+                <div className='h-26'>
                     <h2 className='text-[18px] font-extrabold mb-2'>
                         {project.name}
                     </h2>

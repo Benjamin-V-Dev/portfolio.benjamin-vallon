@@ -5,8 +5,11 @@
 import { useRef, useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiCheckCircle, FiLoader } from 'react-icons/fi';
+import useModalStore from '@/utils/useModalStore';
 
 export default function MailModal({ isOpen, setIsOpen }) {
+    const { closeModal } = useModalStore();
+
     const containerRef = useRef(null);
     const inputRef = useRef(null);
     const [questions, setQuestions] = useState(QUESTIONS);
@@ -22,7 +25,7 @@ export default function MailModal({ isOpen, setIsOpen }) {
 
     const handleSubmitLine = (value) => {
         if (curQuestion) {
-            if (curQuestion.key === "Ton email" && !isValidEmail(value)) {
+            if (curQuestion.key === 'Ton email' && !isValidEmail(value)) {
                 setError("L'adresse email est invalide.");
                 return;
             }
@@ -60,7 +63,7 @@ export default function MailModal({ isOpen, setIsOpen }) {
                 body: JSON.stringify({
                     name: formData['Tu es'],
                     phone: formData['Téléphone'] || '',
-                    email: formData["Ton email"],
+                    email: formData['Ton email'],
                     message: formData['Ton message'],
                 }),
             });
@@ -110,7 +113,7 @@ export default function MailModal({ isOpen, setIsOpen }) {
                             ref={containerRef}
                             onClick={() => inputRef.current?.focus()}
                             className='scrollbar-hide h-[400px] overflow-y-scroll'>
-                            <TerminalHeader />
+                            <TerminalHeader closeModal={closeModal} />
                             <TerminalBody
                                 questions={questions}
                                 setQuestions={setQuestions}
@@ -132,8 +135,13 @@ export default function MailModal({ isOpen, setIsOpen }) {
     );
 }
 
-const TerminalHeader = () => (
-    <div className='w-full flex flex-col h-16 gap-4 sm:flex-row sm:justify-start sm:items-center sm:gap-10'>
+const TerminalHeader = ({ closeModal }) => (
+    <div className='relative w-full flex flex-col h-16 gap-4 sm:flex-row sm:justify-start sm:items-center sm:gap-10'>
+        <div
+            className='absolute top-0 right-0 cursor-pointer'
+            onClick={closeModal}>
+            x
+        </div>
         <div className='flex gap-2'>
             <div className='w-3 h-3 rounded-full bg-red-500' />
             <div className='w-3 h-3 rounded-full bg-yellow-500' />
@@ -155,7 +163,7 @@ const TerminalBody = ({
     inputRef,
     containerRef,
     error,
-    sending
+    sending,
 }) => {
     const [text, setText] = useState('');
     const [focused, setFocused] = useState(false);
@@ -251,7 +259,8 @@ const TerminalBody = ({
 const InitialText = () => (
     <>
         <p className='text-center text-xs sm:text-sm'>
-            Hey, salut ! Je suis l'assistant de Benjamin. Ravi de te rencontrer. 😊
+            Hey, salut ! Je suis l'assistant de Benjamin. Ravi de te rencontrer.
+            😊
         </p>
         <p className='whitespace-nowrap overflow-hidden font-light'>
             ------------------------------------------------------------------------
@@ -340,12 +349,12 @@ const QUESTIONS = [
     {
         key: 'Ton message',
         text: `Enchanté {name}, quel est le `,
-        postfix: "message à faire passer ?",
+        postfix: 'message à faire passer ?',
         complete: false,
         value: '',
     },
     {
-        key: "Ton email",
+        key: 'Ton email',
         text: "C'est noté ! Pour transmettre le message, je vais avoir besoin de ton ",
         postfix: 'email.',
         complete: false,

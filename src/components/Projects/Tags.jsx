@@ -13,7 +13,7 @@ export function Tags({ tags }) {
 
     return (
         <div
-            className='flex flex-row items-center justify-start w-full'
+            className='flex flex-row items-center justify-start'
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}>
             <AnimatedTooltip items={items} />

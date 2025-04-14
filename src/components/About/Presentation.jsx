@@ -74,8 +74,7 @@ export default function Presentation() {
                     className='text-center mt-6 mx-auto sm:w-4/5 md:w-3/5 lg:w-4/5 lg:mx-0 lg:text-left'
                     variants={itemVariants} // Animation pour le paragraphe
                 >
-                    Développeur web frontend, j'utilise principalement React, Next.js,
-                    Node.js et Firebase pour les sites et applications web que je crée.<br></br>Je m'intéresse également aux autres langages et frameworks pour enrichir en permanence mes connaissances et assouvir ma curiosité.
+                    Développeur web fullstack, j'utilise principalement React, Next.js, React Native et Node.js.
                 </motion.p>
             </motion.div>
         </motion.section>
