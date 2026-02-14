@@ -8,7 +8,8 @@ export default function Parcours() {
             periode: "Mars 2024 - Aujourd'hui",
             pointColor: 'rgb(134, 122, 238)',
             titre: 'Freelance',
-            description: "Création de sites et d'applications web",
+            description:
+                "Création de sites et d'applications web | Digitalisation : déploiement d’outils, sécurisation des accès, automatisation des process, formation équipes (IT & IA)",
             url: 'https://benjamin-vallon.fr',
         },
         {
@@ -82,9 +83,7 @@ export default function Parcours() {
 
     return (
         <div className='my-36'>
-            <h2 className='heading1 text-customBlue text-center'>
-                Parcours
-            </h2>
+            <h2 className='heading1 text-customBlue text-center'>Parcours</h2>
             <motion.div
                 ref={ref} // Référence pour la détection
                 className='relative bg-customDarkGray flex flex-col gap-10 mt-10 py-20 rounded-[30px] sm:p-6'
@@ -122,7 +121,11 @@ export default function Parcours() {
                         </div>
                         <div className='w-[45%] flex flex-col'>
                             <div className='bg-customGrayTags rounded-[20px] p-3 max-w-[350px]'>
-                                <a href={parcours.url} target='_blank' rel='noopener noreferrer' className='text-[15px] font-bold'>
+                                <a
+                                    href={parcours.url}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='text-[15px] font-bold text-customBlue'>
                                     {parcours.titre}
                                 </a>
                                 <p className='text-[13px] w-full'>
